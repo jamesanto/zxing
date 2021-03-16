@@ -1,0 +1,1 @@
+- figure out what goes wrong at PDF417ScanningDecoder.createDecoderResult for image '02_frame344.jpg'
