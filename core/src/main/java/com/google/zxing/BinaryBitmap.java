@@ -19,6 +19,8 @@ package com.google.zxing;
 import com.google.zxing.common.BitArray;
 import com.google.zxing.common.BitMatrix;
 
+import java.awt.image.BufferedImage;
+
 /**
  * This class is the core bitmap class used by ZXing to represent 1 bit data. Reader objects
  * accept a BinaryBitmap and attempt to decode it.
@@ -29,12 +31,22 @@ public final class BinaryBitmap {
 
   private final Binarizer binarizer;
   private BitMatrix matrix;
+  private BufferedImage source;
 
   public BinaryBitmap(Binarizer binarizer) {
     if (binarizer == null) {
       throw new IllegalArgumentException("Binarizer must be non-null.");
     }
     this.binarizer = binarizer;
+  }
+
+  public BinaryBitmap(Binarizer binarizer, BufferedImage source) {
+    this(binarizer);
+    this.source = source;
+  }
+
+  public BufferedImage getSource() {
+    return source;
   }
 
   /**

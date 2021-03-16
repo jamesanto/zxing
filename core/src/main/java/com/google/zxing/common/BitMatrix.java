@@ -175,6 +175,10 @@ public final class BitMatrix implements Cloneable {
     }
   }
 
+  public void set(float x, float y) {
+    set((int) x, (int) y);
+  }
+
   public void unset(int x, int y) {
     int offset = y * rowSize + (x / 32);
     if (offset < bits.length) {
@@ -440,6 +444,10 @@ public final class BitMatrix implements Cloneable {
    */
   public int getRowSize() {
     return rowSize;
+  }
+
+  public int[] getBits() {
+    return bits;
   }
 
   @Override

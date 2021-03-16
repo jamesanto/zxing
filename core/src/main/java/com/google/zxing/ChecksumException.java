@@ -24,13 +24,8 @@ package com.google.zxing;
  */
 public final class ChecksumException extends ReaderException {
 
-  private static final ChecksumException INSTANCE = new ChecksumException();
-  static {
-    INSTANCE.setStackTrace(NO_TRACE); // since it's meaningless
-  }
-
   private ChecksumException() {
-    // do nothing
+    super();
   }
 
   private ChecksumException(Throwable cause) {
@@ -38,10 +33,10 @@ public final class ChecksumException extends ReaderException {
   }
 
   public static ChecksumException getChecksumInstance() {
-    return isStackTrace ? new ChecksumException() : INSTANCE;
+    return new ChecksumException();
   }
 
   public static ChecksumException getChecksumInstance(Throwable cause) {
-    return isStackTrace ? new ChecksumException(cause) : INSTANCE;
+    return new ChecksumException(cause);
   }
 }

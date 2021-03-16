@@ -28,10 +28,13 @@ import com.google.zxing.ResultMetadataType;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.common.DecoderResult;
 import com.google.zxing.multi.MultipleBarcodeReader;
+import com.google.zxing.pdf417.decoder.ImageUtils;
 import com.google.zxing.pdf417.decoder.PDF417ScanningDecoder;
 import com.google.zxing.pdf417.detector.Detector;
 import com.google.zxing.pdf417.detector.PDF417DetectorResult;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -81,10 +84,17 @@ public final class PDF417Reader implements Reader, MultipleBarcodeReader {
     }
   }
 
-  private static Result[] decode(BinaryBitmap image, Map<DecodeHintType, ?> hints, boolean multiple) 
+  private static Result[] decode(BinaryBitmap image, Map<DecodeHintType, ?> hints, boolean multiple)
       throws NotFoundException, FormatException, ChecksumException {
     List<Result> results = new ArrayList<>();
     PDF417DetectorResult detectorResult = Detector.detect(image, hints, multiple);
+
+    BufferedImage img = ImageUtils.clone(image.getSource());
+    for(ResultPoint[] points : detectorResult.getPoints()) {
+      ImageUtils.drawBound(img, points[4], points[5], points[6], points[7]);
+    }
+    ImageUtils.showImg(img);
+
     for (ResultPoint[] points : detectorResult.getPoints()) {
       DecoderResult decoderResult = PDF417ScanningDecoder.decode(detectorResult.getBits(), points[4], points[5],
           points[6], points[7], getMinCodewordWidth(points), getMaxCodewordWidth(points));
