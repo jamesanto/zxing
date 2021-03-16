@@ -16,6 +16,7 @@
 
 package com.google.zxing.common;
 
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 /**
@@ -39,6 +40,8 @@ public final class BitMatrix implements Cloneable {
   private int height;
   private int rowSize;
   private int[] bits;
+
+  private BufferedImage source;
 
   /**
    * Creates an empty square {@code BitMatrix}.
@@ -70,6 +73,14 @@ public final class BitMatrix implements Cloneable {
     this.height = height;
     this.rowSize = rowSize;
     this.bits = bits;
+  }
+
+  public BufferedImage getSource() {
+    return source;
+  }
+
+  public void setSource(BufferedImage source) {
+    this.source = source;
   }
 
   /**
@@ -512,7 +523,9 @@ public final class BitMatrix implements Cloneable {
 
   @Override
   public BitMatrix clone() {
-    return new BitMatrix(width, height, rowSize, bits.clone());
+    BitMatrix cloned = new BitMatrix(width, height, rowSize, bits.clone());
+    cloned.setSource(source);
+    return cloned;
   }
 
 }

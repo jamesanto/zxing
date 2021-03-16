@@ -89,6 +89,7 @@ public final class Detector {
       }
       barcodeCoordinates = detect(multiple, bitMatrix);
     }
+    bitMatrix.setSource(image.getSource());
     return new PDF417DetectorResult(bitMatrix, barcodeCoordinates);
   }
 
