@@ -31,9 +31,12 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.multi.GenericMultipleBarcodeReader;
 import com.google.zxing.multi.MultipleBarcodeReader;
 
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -46,6 +49,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 
 /**
@@ -63,9 +67,16 @@ final class DecodeWorker implements Callable<Integer> {
   private final Queue<URI> inputs;
   private final Map<DecodeHintType,?> hints;
 
-  DecodeWorker(DecoderConfig config, Queue<URI> inputs) {
+  public DecodeWorker(DecoderConfig config, Queue<URI> inputs) {
     this.config = config;
     this.inputs = inputs;
+    hints = config.buildHints();
+  }
+
+  public DecodeWorker() {
+    this.config = new DecoderConfig();
+    this.config.brief = true;
+    this.inputs = new ArrayBlockingQueue<>(1);
     hints = config.buildHints();
   }
 
@@ -119,6 +130,33 @@ final class DecodeWorker implements Callable<Integer> {
       resultTexts.add(result.getText());
     }
     Files.write(buildOutputPath(input, ".txt"), resultTexts, StandardCharsets.UTF_8);
+  }
+
+  public boolean canDecode(URI uri) throws IOException {
+    // System.out.println("IS : " + is);
+    // Path p = Files.createTempFile("bc", ".jpg");
+    try {
+      // FileOutputStream fos = new FileOutputStream(p.toFile());
+      // byte[] buffer = new byte[1024];
+      // int read;
+      // while ((read = is.read(buffer)) != -1) {
+      //     fos.write(buffer, 0, read);
+      // }
+      // fos.close();
+      // is.close();
+
+      Result[] results = decode(uri, this.hints);
+      if(results == null) {
+        return false;
+      }
+      StringBuilder resultTexts = new StringBuilder();
+      for (Result result : results) {
+        resultTexts.append(result.getText());
+      }
+      return !resultTexts.toString().trim().isEmpty();
+    } finally {
+      // Files.delete(p);
+    }
   }
 
   private Result[] decode(URI uri, Map<DecodeHintType,?> hints) throws IOException {

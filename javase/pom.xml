@@ -38,6 +38,16 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.3.v20170317</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.3.v20170317</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -69,7 +79,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.google.zxing.client.j2se.CommandLineRunner</mainClass>
+              <mainClass>com.google.zxing.client.j2se.Main</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

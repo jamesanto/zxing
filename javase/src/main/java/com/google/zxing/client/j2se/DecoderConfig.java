@@ -56,7 +56,7 @@ final class DecoderConfig {
 
   @Parameter(names = "--brief",
       description = "Only output one line per file, omitting the contents")
-  boolean brief;
+  public boolean brief;
 
   @Parameter(names = "--recursive",
       description = "Descend into subdirectories")
